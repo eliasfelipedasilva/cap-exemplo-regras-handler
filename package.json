@@ -6,15 +6,24 @@
     "license": "UNLICENSED",
     "private": true,
     "dependencies": {
-        "@sap/cds": "^5",
-        "express": "^4",
-        "hdb": "^0.18.3"
+        "@cap-js/hana": "^2",
+        "@cap-js/sqlite": "*",
+        "@sap/cds": "^9.8.0",
+        "express": "^4"
     },
     "devDependencies": {
-        "sqlite3": "^5.0.2"
+        "@cap-js/cds-test": "*",
+        "jest": "^29"
     },
     "scripts": {
-        "start": "cds run"
+        "start": "cds run",
+        "watch": "cds watch",
+        "build": "cds build --production",
+        "deploy": "mbt build -t ./ && cf deploy cap-exemplo_1.0.0.mtar --delete-service-keys",
+        "deploy:cf": "cf push",
+        "undeploy": "cf undeploy cap-exemplo --delete-services --delete-service-keys",
+        "test": "jest --testTimeout=60000",
+        "test:watch": "jest --watch --testTimeout=60000"
     },
     "eslintConfig": {
         "extends": "eslint:recommended",
@@ -44,8 +53,31 @@
     "cds": {
         "requires": {
             "db": {
-                "kind": "hana"
+                "[development]": {
+                    "kind": "sqlite"
+                },
+                "[production]": {
+                    "kind": "hanatrial"
+                }
             }
+        },
+        "build": {
+            "tasks": [
+                {
+                    "for": "hana",
+                    "src": "db",
+                    "options": {
+                        "model": [
+                            "db",
+                            "srv"
+                        ]
+                    }
+                },
+                {
+                    "for": "nodejs",
+                    "src": "srv"
+                }
+            ]
         },
         "hana": {
             "deploy-format": "hdbtable"

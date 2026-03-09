@@ -1,0 +1,10 @@
+---
+applications:
+  - name: cap-exemplo-srv
+    path: gen/srv
+    buildpack: nodejs_buildpack
+    memory: 256M
+    env:
+      NODE_ENV: production
+    services:
+      - cap-exemplo-db
