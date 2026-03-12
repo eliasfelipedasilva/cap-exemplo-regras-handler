@@ -9,14 +9,16 @@
         "@cap-js/hana": "^2",
         "@cap-js/sqlite": "*",
         "@sap/cds": "^9.8.0",
-        "express": "^4"
+        "@sap/xssec": "^4.12.2",
+        "express": "^4",
+        "passport": "^0.7.0"
     },
     "devDependencies": {
         "@cap-js/cds-test": "*",
         "jest": "^29"
     },
     "scripts": {
-        "start": "cds run",
+        "start": "cds-serve",
         "watch": "cds watch",
         "build": "cds build --production",
         "deploy": "mbt build -t ./ && cf deploy cap-exemplo_1.0.0.mtar --delete-service-keys",
@@ -52,12 +54,13 @@
     },
     "cds": {
         "requires": {
+            "auth": "dummy",
             "db": {
                 "[development]": {
                     "kind": "sqlite"
                 },
                 "[production]": {
-                    "kind": "hanatrial"
+                    "kind": "hana"
                 }
             }
         },

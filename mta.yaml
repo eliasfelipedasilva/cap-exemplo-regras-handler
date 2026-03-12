@@ -51,7 +51,7 @@ resources:
     # ------------------------------------------------------------
     type: com.sap.xs.hdi-container
     parameters:
-      service: hanatrial
+      service: hana
       service-plan: hdi-shared
     properties:
       hdi-service-name: ${service-name}
